@@ -163,6 +163,13 @@ pub struct FluxInstanceCluster {
     /// Accepted values are: 'small', 'medium' and 'large'.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub size: Option<FluxInstanceClusterSize>,
+    /// SourceWatcher configures the source-watcher component.
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        rename = "sourceWatcher"
+    )]
+    pub source_watcher: Option<FluxInstanceClusterSourceWatcher>,
     /// TenantDefaultDecryptionServiceAccount is the name of the service account
     /// to use as default for kustomize-controller SOPS decryption when the
     /// multitenant lockdown for object identity is enabled. Defaults to the
@@ -212,6 +219,22 @@ pub enum FluxInstanceClusterSize {
     Medium,
     #[serde(rename = "large")]
     Large,
+}
+
+/// SourceWatcher configures the source-watcher component.
+#[derive(Serialize, Deserialize, Clone, Debug, Default, PartialEq)]
+pub struct FluxInstanceClusterSourceWatcher {
+    /// NamespaceManager enables the RBAC required by source-watcher to manage
+    /// Namespaces on behalf of ArtifactGenerator resources. This grants the
+    /// source-watcher service account cluster-wide permissions to create,
+    /// update, patch and delete Namespaces. The source-watcher component must
+    /// be enabled in .spec.components.
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        rename = "namespaceManager"
+    )]
+    pub namespace_manager: Option<bool>,
 }
 
 /// Cluster holds the specification of the Kubernetes cluster.
